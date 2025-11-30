@@ -1,0 +1,58 @@
+{
+  "placeholderImages": [
+    {
+      "id": "1",
+      "description": "Abstract AI visualization",
+      "imageUrl": "https://images.unsplash.com/photo-1727434032792-c7ef921ae086?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMEFJfGVufDB8fHx8MTc2MzkxMzEzN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract AI"
+    },
+    {
+      "id": "2",
+      "description": "Open source code on a screen",
+      "imageUrl": "https://images.unsplash.com/photo-1614112671716-d584b4ce4f49?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvcGVuJTIwc291cmNlfGVufDB8fHx8MTc2NDAwNzIwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "open source"
+    },
+    {
+      "id": "3",
+      "description": "Web development setup",
+      "imageUrl": "https://images.unsplash.com/photo-1624996752380-8ec242e0f85d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx3ZWIlMjBkZXZlbG9wbWVudHxlbnwwfHx8fDE3NjM5OTkzMTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "web development"
+    },
+    {
+      "id": "4",
+      "description": "DevOps infinity loop diagram",
+      "imageUrl": "https://picsum.photos/seed/4/600/400",
+      "imageHint": "devops diagram"
+    },
+    {
+      "id": "5",
+      "description": "Cybersecurity lock icon",
+      "imageUrl": "https://images.unsplash.com/photo-1753122435360-644ac2f9c68a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjeWJlcnNlY3VyaXR5JTIwbG9ja3xlbnwwfHx8fDE3NjM5NjQ1NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cybersecurity lock"
+    },
+    {
+      "id": "6",
+      "description": "A person reviewing code on multiple monitors",
+      "imageUrl": "https://images.unsplash.com/photo-1632144130358-6cfeed023e27?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb2RlJTIwcmV2aWV3fGVufDB8fHx8MTc2Mzk1NzI3M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "code review"
+    },
+    {
+      "id": "7",
+      "description": "A server room with glowing lights",
+      "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzZXJ2ZXIlMjByb29tfGVufDB8fHx8MTc2Mzk2MzUwNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "server room"
+    },
+    {
+      "id": "8",
+      "description": "A developer at a standing desk",
+      "imageUrl": "https://images.unsplash.com/photo-1693773687129-d336caa472d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkZXZlbG9wZXIlMjBzZXR1cHxlbnwwfHx8fDE3NjM5OTk2MjF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "developer setup"
+    },
+    {
+      "id": "9",
+      "description": "Futuristic cityscape with data streams",
+      "imageUrl": "https://images.unsplash.com/photo-1553675559-5046b59a5ca5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmdXR1cmlzdGljJTIwY2l0eXxlbnwwfHx8fDE3NjM4ODYzNzR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "futuristic city"
+    }
+  ]
+}

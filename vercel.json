@@ -1,0 +1,18 @@
+{
+    "buildCommand": "npm run build",
+    "outputDirectory": ".next",
+    "devCommand": "npm run dev",
+    "installCommand": "npm install",
+    "framework": "nextjs",
+    "regions": [
+        "iad1"
+    ],
+    "env": {
+        "ADMIN_EMAIL": "@admin_email",
+        "ADMIN_PASSWORD": "@admin_password",
+        "DATABASE_URL": "@database_url",
+        "GOOGLE_GENAI_API_KEY": "@google_genai_api_key",
+        "GEMINI_API_KEY_2": "@gemini_api_key_2",
+        "CRON_SECRET": "@cron_secret"
+    }
+}
