@@ -176,8 +176,6 @@ This project is licensed under the **MIT License** — free to use, modify, and 
 
 ## 🔗 Links
 
-- **Repository**: [github.com/aliopas/The-blog](https://github.com/aliopas/The-blog)
-- **Live Demo**: Coming soon
-- **Documentation**: Check the `/docs` folder (if available)
+- **Live Demo**: https://ali-alaa-blog.netlify.app/
 
 ---
