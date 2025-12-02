@@ -43,18 +43,12 @@ export default async function AdminLoginPage({
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <Link href="#" className="ml-auto inline-block text-sm underline">
-                    Forgot your password?
-                  </Link>
                 </div>
                 <Input id="password" name="password" type="password" required />
               </div>
               <Button type="submit" className="w-full">Login</Button>
             </form>
-            <div className="mt-4 text-center text-sm text-muted-foreground">
-              <p>Default credentials for testing:</p>
-              <p className="font-mono text-xs mt-1">admin@techinsights.com / secure_password_123</p>
-            </div>
+            <div className="mt-4 text-center text-sm text-muted-foreground"></div>
           </CardContent>
         </Card>
       </div>

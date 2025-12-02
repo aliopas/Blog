@@ -1,49 +1,27 @@
-/**
- * 🤖 AI USAGE: Traffic Analysis (DISABLED)
- * AI Flow: analyzeTrafficPatterns
- * Location: @/ai/flows/analyze-traffic-patterns
- */
-
 'use server';
-import { resetAllApiKeys, getAllApiKeysStatus } from '@/lib/api-key-manager';
-// import { analyzeTrafficPatterns } from '@/ai/flows/analyze-traffic-patterns'; // 🤖 DISABLED
+
+// Analytics actions - All AI features disabled, returning mock data only
 
 export async function generateTrafficAnalysis(): Promise<{
     summary: string;
     recommendations: string[];
     trendingTopics: string[];
 }> {
-    await resetAllApiKeys();
-    try {
-        console.log('🚀 Starting traffic analysis...');
+    // Return mock data - AI features are disabled
+    console.log('⚠️ AI traffic analysis is disabled. Returning placeholder data.');
 
-        // 🤖 AI DISABLED - Uncomment to enable
-        throw new Error('AI traffic analysis is currently disabled. Please enable it in the code.');
-
-        // // Check if we have any available keys
-        // const keysStatus = await getAllApiKeysStatus();
-        // const availableKeys = keysStatus.filter(k => !k.quotaExceeded);
-
-        // if (availableKeys.length === 0) {
-        //     throw new Error('No API keys available. All quotas exceeded. Please reset or add new keys.');
-        // }
-
-        // console.log(`✅ ${availableKeys.length} API keys available`);
-
-        // const result = await analyzeTrafficPatterns();
-        // return result;
-    } catch (error) {
-        console.error('❌ Error generating traffic analysis:', error);
-        throw new Error(error instanceof Error ? error.message : 'Failed to generate traffic analysis');
-    }
+    return {
+        summary: 'AI traffic analysis is currently disabled. Enable AI features to get real insights.',
+        recommendations: [
+            'Focus on writing high-quality content',
+            'Share your posts on social media',
+            'Engage with your audience'
+        ],
+        trendingTopics: ['Technology', 'Development', 'AI']
+    };
 }
 
-// Helper action to check API keys status
+// No API key management needed - AI features are disabled
 export async function checkApiKeysStatus() {
-    try {
-        return await getAllApiKeysStatus();
-    } catch (error) {
-        console.error('Error checking API keys status:', error);
-        return [];
-    }
+    return [];
 }

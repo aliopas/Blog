@@ -6,8 +6,9 @@ import { updatePost, deletePost, addPost } from '@/lib/data';
 import { cookies } from 'next/headers';
 
 export async function login(formData: FormData) {
-    const email = formData.get('email') as string;
+    let email = formData.get('email') as string;
     const password = formData.get('password') as string;
+
 
     if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
         const cookieStore = await cookies();
