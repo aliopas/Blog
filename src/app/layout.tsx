@@ -5,6 +5,9 @@ import { Toaster } from '@/components/ui/toaster';
 export const metadata: Metadata = {
   title: 'Tech Insights Daily',
   description: 'Daily insights on AI, Open Source, and Web Development',
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
