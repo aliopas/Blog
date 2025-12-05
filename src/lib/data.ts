@@ -1,40 +1,60 @@
 'use server';
 
+import { unstable_cache } from 'next/cache';
+
 import { db } from './db';
 import { categories, posts, qualityChecks, postMetrics } from './schema';
 import { eq, desc, and } from 'drizzle-orm';
 import type { Post, Category, ArticleQualityCheck, PostWithQualityCheck } from './types';
 import { format } from 'date-fns';
 import { nanoid } from 'nanoid';
+import { revalidateTag } from 'next/cache';
 
-// Get all posts or filter by status
-export async function getPosts(status?: 'draft' | 'published'): Promise<Post[]> {
-  const query = status
-    ? db.select().from(posts).where(eq(posts.status, status)).orderBy(desc(posts.createdAt))
-    : db.select().from(posts).orderBy(desc(posts.createdAt));
+// Cached function to get all categories
+const getAllCategoriesCached = unstable_cache(
+  async () => {
+    const result = await db.select().from(categories);
+    return result.map(cat => ({
+      id: cat.id.toString(),
+      name: cat.name,
+      slug: cat.slug,
+    }));
+  },
+  ['all-categories'],
+  { tags: ['categories'] }
+);
 
-  const result = await query;
+// Cached function to get all posts with categories
+const getAllPostsCached = unstable_cache(
+  async () => {
+    const result = await db.select().from(posts).orderBy(desc(posts.createdAt));
+    const allCategories = await getAllCategoriesCached();
 
-  // Join with categories
-  const postsWithCategories = await Promise.all(
-    result.map(async (post) => {
-      const category = await db.select().from(categories).where(eq(categories.id, post.categoryId)).limit(1);
+    return result.map((post) => {
+      const category = allCategories.find(c => c.id === post.categoryId.toString());
       return {
         ...post,
         id: post.id.toString(),
         categoryId: post.categoryId.toString(),
         isFeatured: post.isFeatured,
         status: post.status as 'draft' | 'published',
-        category: category[0] ? {
-          id: category[0].id.toString(),
-          name: category[0].name,
-          slug: category[0].slug,
-        } : { id: '1', name: 'AI News', slug: 'ai-news' },
+        category: category || { id: '1', name: 'AI News', slug: 'ai-news' },
       };
-    })
-  );
+    });
+  },
+  ['all-posts'],
+  { tags: ['posts', 'categories'] }
+);
 
-  return postsWithCategories;
+// Get all posts or filter by status
+export async function getPosts(status?: 'draft' | 'published'): Promise<Post[]> {
+  const allPosts = await getAllPostsCached();
+
+  if (status) {
+    return allPosts.filter(p => p.status === status);
+  }
+
+  return allPosts;
 }
 
 // Get post by slug
@@ -97,57 +117,31 @@ export async function getPostById(id: string): Promise<PostWithQualityCheck | nu
 
 // Get all categories
 export async function getCategories(): Promise<Category[]> {
-  const result = await db.select().from(categories);
-  return result.map(cat => ({
-    id: cat.id.toString(),
-    name: cat.name,
-    slug: cat.slug,
-  }));
+  return getAllCategoriesCached();
 }
 
 // Get category by slug
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  const result = await db.select().from(categories).where(eq(categories.slug, slug)).limit(1);
-  if (!result[0]) return null;
-
-  return {
-    id: result[0].id.toString(),
-    name: result[0].name,
-    slug: result[0].slug,
-  };
+  const allCategories = await getAllCategoriesCached();
+  return allCategories.find(c => c.slug === slug) || null;
 }
 
 // Get category by name
 export async function getCategoryByName(name: string): Promise<Category | null> {
-  const result = await db.select().from(categories).where(eq(categories.name, name)).limit(1);
-  if (!result[0]) return null;
-
-  return {
-    id: result[0].id.toString(),
-    name: result[0].name,
-    slug: result[0].slug,
-  };
+  const allCategories = await getAllCategoriesCached();
+  return allCategories.find(c => c.name === name) || null;
 }
 
 // Get posts by category ID
-export async function getPostsByCategoryId(categoryId: string): Promise<Post[]> {
-  const catId = parseInt(categoryId);
-  const result = await db.select().from(posts).where(eq(posts.categoryId, catId));
+export async function getPostsByCategoryId(categoryId: string, status?: 'draft' | 'published'): Promise<Post[]> {
+  const allPosts = await getAllPostsCached();
+  let filtered = allPosts.filter(p => p.categoryId === categoryId);
 
-  const category = await db.select().from(categories).where(eq(categories.id, catId)).limit(1);
+  if (status) {
+    filtered = filtered.filter(p => p.status === status);
+  }
 
-  return result.map(post => ({
-    ...post,
-    id: post.id.toString(),
-    categoryId: post.categoryId.toString(),
-    isFeatured: post.isFeatured,
-    status: post.status as 'draft' | 'published',
-    category: category[0] ? {
-      id: category[0].id.toString(),
-      name: category[0].name,
-      slug: category[0].slug,
-    } : { id: '1', name: 'AI News', slug: 'ai-news' },
-  }));
+  return filtered;
 }
 
 // Add new post
@@ -184,26 +178,29 @@ export async function addPost(postData: any, qualityData: any, categoryName: str
     suggestions: qualityData.suggestions,
   });
 
+  revalidateTag('posts');
   return newPost.id.toString();
 }
 
 // Update post
 export async function updatePost(id: string, data: Partial<Omit<Post, 'id'>>) {
-    const postId = parseInt(id);
-    if (isNaN(postId)) {
-        throw new Error('Invalid post ID');
-    }
+  const postId = parseInt(id);
+  if (isNaN(postId)) {
+    throw new Error('Invalid post ID');
+  }
 
-    const dataToUpdate: { [key: string]: any } = { ...data, updatedAt: new Date() };
+  const dataToUpdate: { [key: string]: any } = { ...data, updatedAt: new Date() };
 
-    // Ensure categoryId is a number if it exists
-    if (data.categoryId && typeof data.categoryId === 'string') {
-        dataToUpdate.categoryId = parseInt(data.categoryId, 10);
-    }
+  // Ensure categoryId is a number if it exists
+  if (data.categoryId && typeof data.categoryId === 'string') {
+    dataToUpdate.categoryId = parseInt(data.categoryId, 10);
+  }
 
-    await db.update(posts)
-        .set(dataToUpdate)
-        .where(eq(posts.id, postId));
+  await db.update(posts)
+    .set(dataToUpdate)
+    .where(eq(posts.id, postId));
+
+  revalidateTag('posts');
 }
 
 // Delete post
@@ -214,4 +211,5 @@ export async function deletePost(id: string): Promise<void> {
     await tx.delete(qualityChecks).where(eq(qualityChecks.postId, postId));
     await tx.delete(posts).where(eq(posts.id, postId));
   });
+  revalidateTag('posts');
 }

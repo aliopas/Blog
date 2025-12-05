@@ -31,7 +31,7 @@ async function getCategoryData(slug: string) {
     return { category: null, posts: [] };
   }
 
-  const categoryPostsData = await getPostsByCategoryId(category.id);
+  const categoryPostsData = await getPostsByCategoryId(category.id, 'published');
 
   return { category, posts: categoryPostsData };
 }

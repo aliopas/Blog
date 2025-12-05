@@ -14,37 +14,37 @@ import type { Post, Category } from '@/lib/types';
 
 
 async function getPageData() {
-    try {
-        const allPosts = await getPosts();
-        const categories = await getCategories();
+  try {
+    const allPosts = await getPosts('published');
+    const categories = await getCategories();
 
-        const featuredPost = allPosts.find(p => p.isFeatured) ?? allPosts[0] ?? null;
-        const latestPosts = allPosts.filter(p => p.id !== featuredPost?.id).slice(0, 6);
-        const trendingPosts = [...allPosts].sort(() => 0.5 - Math.random()).slice(0, 4);
+    const featuredPost = allPosts.find(p => p.isFeatured) ?? allPosts[0] ?? null;
+    const latestPosts = allPosts.filter(p => p.id !== featuredPost?.id).slice(0, 6);
+    const trendingPosts = [...allPosts].sort(() => 0.5 - Math.random()).slice(0, 4);
 
-        return { posts: allPosts, categories, featuredPost, latestPosts, trendingPosts };
+    return { posts: allPosts, categories, featuredPost, latestPosts, trendingPosts };
 
-    } catch (e: any) {
-        console.error("Failed to fetch page data:", e);
-        // Return empty data on error to prevent the page from crashing.
-         return { posts: [], categories: [], featuredPost: null, latestPosts: [], trendingPosts: [] };
-    }
+  } catch (e: any) {
+    console.error("Failed to fetch page data:", e);
+    // Return empty data on error to prevent the page from crashing.
+    return { posts: [], categories: [], featuredPost: null, latestPosts: [], trendingPosts: [] };
+  }
 }
 
 
 export default async function Home() {
   const { categories, featuredPost, latestPosts, trendingPosts } = await getPageData();
-  
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1">
         <Hero />
         <CategoriesBar categories={categories} />
-        
+
         <section className="container mx-auto mt-12 max-w-7xl px-4 sm:px-6 lg:px-8">
           {featuredPost && (
-             <FeaturedPost post={featuredPost} />
+            <FeaturedPost post={featuredPost} />
           )}
         </section>
 
